@@ -1,0 +1,23 @@
+stage:
+  - build
+  - publish
+  - cleanup
+
+build:
+  stage: build
+  script:
+    - pwd
+    - ls
+    - docker --version
+    - docker container ls -a
+    - docker image ls
+
+publish:
+  stage: publish
+  script:
+    - echo 'TODO :: Publish'
+
+cleanup:
+  stage: cleanup
+  script:
+    - echo 'TODO :: Cleanup'
