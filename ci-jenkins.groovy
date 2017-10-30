@@ -11,9 +11,11 @@ node {
   }
 
   stage('publish') {
-    sh '''
-      docker login ${REGISTRY_HOST} -u ${REGISTRY_USERNAME} -p ${REGISTRY_PASSWORD}
-    '''
+    withCredentials([string(credentialsId: '', variable: 'REGISTRY_PASSWORD')]) {
+      sh '''
+        docker login "${REGISTRY_HOST}" -u "${REGISTRY_USERNAME}" -p "${REGISTRY_PASSWORD}"
+      '''
+    }
   }
 
   stage('cleanup') {
