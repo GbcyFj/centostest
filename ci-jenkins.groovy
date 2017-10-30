@@ -11,7 +11,7 @@ node {
   }
 
   stage('publish') {
-    withCredentials([string(credentialsId: '', variable: 'REGISTRY_PASSWORD')]) {
+    withCredentials([string(credentialsId: 'Jenkins CICD Containers (emartinez)', variable: 'REGISTRY_PASSWORD')]) {
       sh '''
         docker login "${REGISTRY_HOST}" -u "${REGISTRY_USERNAME}" -p "${REGISTRY_PASSWORD}"
       '''
