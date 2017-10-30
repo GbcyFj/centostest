@@ -14,6 +14,7 @@ node {
     withCredentials([string(credentialsId: 'Access_Token_code.chs.usgs.gov', variable: 'REGISTRY_PASSWORD')]) {
       sh '''
         docker login "${REGISTRY_HOST}" -u "${REGISTRY_USERNAME}" -p "${REGISTRY_PASSWORD}"
+        docker push ${REGISTRY_HOST}/${IMAGE_NAME}:${IMAGE_VERSION}
       '''
     }
   }
