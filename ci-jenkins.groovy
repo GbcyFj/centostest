@@ -5,20 +5,20 @@ node {
 
   stage('build') {
     sh '''
-      pwd
-      ls -la
-      echo ${IMAGE_TAG_VERSION}
-      docker --version
-      docker container ls -a
+      docker build -t ${REGISTRY_HOST}/${IMAGE_NAME}:${IMAGE_VERSION} .
       docker image ls
     '''
   }
 
   stage('publish') {
-
+    sh '''
+      docker login ${REGISTRY_HOST} -u ${REGISTRY_USERNAME} -p ${REGISTRY_PASSWORD}
+    '''
   }
 
   stage('cleanup') {
-
+    sh '''
+      docker image rm ${REGISTRY_HOST}/${IMAGE_NAME}:${IMAGE_VERSION}
+    '''
   }
 }
