@@ -55,39 +55,23 @@ node {
       }
     }
 
-    // stage('Publish') {
-    //   withCredentials([usernamePassword(
-    //       credentialsId: 'innersource-hazdev-cicd',
-    //       passwordVariable: 'REGISTRY_PASSWORD',
-    //       usernameVariable: 'REGISTRY_USERNAME')
-    //   ]) {
-    //     ansiColor('xterm') {
-    //       sh """
-    //         docker login ${GITLAB_INNERSOURCE_REGISTRY} \
-    //           -u ${REGISTRY_USERNAME} \
-    //           -p ${REGISTRY_PASSWORD}
+    stage('Publish') {
+      withCredentials([usernamePassword(
+          credentialsId: 'innersource-hazdev-cicd',
+          passwordVariable: 'REGISTRY_PASSWORD',
+          usernameVariable: 'REGISTRY_USERNAME')
+      ]) {
+        ansiColor('xterm') {
+          sh """
+            docker login ${GITLAB_INNERSOURCE_REGISTRY} \
+              -u ${REGISTRY_USERNAME} \
+              -p ${REGISTRY_PASSWORD}
 
-    //         docker push ${IMAGE_NAME}:${params.IMAGE_VERSION}
-    //       """
-    //     }
-
-    //     if (params.TAG_LATEST && params.IMAGE_VERSION != 'latest') {
-    //       ansiColor('xterm') {
-    //         sh """
-    //           docker tag \
-    //             ${IMAGE_NAME}:${params.IMAGE_VERSION} \
-    //             ${IMAGE_NAME}:latest
-
-    //           docker login ${GITLAB_INNERSOURCE_REGISTRY} \
-    //             -u ${REGISTRY_USERNAME} \
-    //             -p ${REGISTRY_PASSWORD}
-
-    //           docker push ${IMAGE_NAME}:${latest}
-    //         """
-    //       }
-    //     }
-    //   }
-    // }
+            docker push ${IMAGE_NAME}:${IMAGE_VERSION}
+          """
+        }
+      }
+    }
   } catch (err) {
     try {
       mail([
