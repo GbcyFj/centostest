@@ -17,9 +17,32 @@ node {
 
       SCM_VARS = checkout scm
 
+      if (params.GIT_BRANCH != '') {
+        sh "git checkout --detach ${params.GIT_BRANCH}"
+
+        SCM_VARS.GIT_BRANCH = params.GIT_BRANCH
+        SCM_VARS.GIT_COMMIT = sh(
+          returnStdout: true,
+          script: "git rev-parse HEAD"
+        )
+      }
+
+      if (SCM_VARS.GIT_BRANCH == 'origin/master') {
+        // git master --> docker latest
+        IMAGE_VERSION = 'latest'
+      } else if (SCM_VARS.GIT_BRANCH.substring(0, 7) == 'origin/') {
+        // git origin/BRANCH --> docker BRANCH
+        IMAGE_VERSION = SCM_VARS.GIT_BRANCH.substring(7)
+      } else {
+        // git TAG --> docker TAG
+        IMAGE_VERSION = SCM_VARS.GIT_BRANCH
+      }
+
       SCM_VARS.each { key, value ->
         echo "${key} = ${value}"
       }
+
+      echo "IMAGE_VERSION = ${IMAGE_VERISON}"
     }
 
     // stage('Build') {
