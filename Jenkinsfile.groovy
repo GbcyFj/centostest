@@ -4,7 +4,7 @@ node {
   def CONTAINER_BASE = null
   def FROM_IMAGE = null
   def IMAGE_NAME = null
-  def IMAGE VERSION = null
+  def IMAGE_VERSION = null
   def SCM_VARS = null
 
   CONTAINER_BASE = "${GITLAB_INNERSOURCE_REGISTRY}/devops/containers"
