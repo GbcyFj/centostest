@@ -15,7 +15,7 @@ node {
     stage('Initialize') {
       cleanWs()
 
-      SCM_VARS = checkout changelog: false, poll: false, scm
+      SCM_VARS = checkout scm
 
       SCM_VARS.each { key, value ->
         echo "${key} = ${value}"
@@ -82,5 +82,8 @@ node {
       subject: "Jenkins Pipeline Failed: ${env.BUILD_TAG}",
       body: "Details: ${message}"
     ])
+
+    currentBuild.result = 'FAILURE'
+    throw err
   }
 }
