@@ -45,15 +45,15 @@ node {
       echo "IMAGE_VERSION = ${IMAGE_VERSION}"
     }
 
-    // stage('Build') {
-    //   ansiColor('xterm') {
-    //     sh """
-    //       docker build \
-    //         --build-arg FROM_IMAGE=${FROM_IMAGE}:${params.IMAGE_VERSION}
-    //         -t ${IMAGE_NAME}:${params.IMAGE_VERSION} .
-    //     """
-    //   }
-    // }
+    stage('Build') {
+      ansiColor('xterm') {
+        sh """
+          docker build \
+            --build-arg FROM_IMAGE=${FROM_IMAGE}:${IMAGE_VERSION}
+            -t ${IMAGE_NAME}:${IMAGE_VERSION} .
+        """
+      }
+    }
 
     // stage('Publish') {
     //   withCredentials([usernamePassword(
