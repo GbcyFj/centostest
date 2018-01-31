@@ -49,7 +49,7 @@ node {
       ansiColor('xterm') {
         sh """
           docker build \
-            --build-arg FROM_IMAGE=${FROM_IMAGE}:${IMAGE_VERSION}
+            --build-arg FROM_IMAGE=${FROM_IMAGE}:${IMAGE_VERSION} \
             -t ${IMAGE_NAME}:${IMAGE_VERSION} .
         """
       }
