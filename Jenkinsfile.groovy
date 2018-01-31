@@ -90,16 +90,14 @@ node {
     // }
   } catch (err) {
     try {
-      def trace = err.getStackTrace()
-
       mail([
         to: 'gs-haz_dev_team_group@usgs.gov',
         from: 'noreply@jenkins',
         subject: "Jenkins Pipeline Failed: ${env.BUILD_TAG}",
-        body: "Details: ${trace}"
+        body: "Details: ${err}"
       ])
     } catch (inner) {
-      echo "${inner}"
+      echo "An error occured while sending email. '${inner}'"
     }
 
     currentBuild.result = 'FAILURE'
