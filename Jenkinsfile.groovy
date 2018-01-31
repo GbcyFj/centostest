@@ -89,22 +89,14 @@ node {
     //   }
     // }
   } catch (err) {
-    def message
-    def printWriter
-    def stringWriter
-
     try {
-      stringWriter = new StringWriter()
-      printWriter = new PrintWriter(stringWriter)
-      err.printStackTrace(printWriter)
-
-      message = stringWriter.toString()
+      def trace = err.getStackTrace()
 
       mail([
         to: 'gs-haz_dev_team_group@usgs.gov',
         from: 'noreply@jenkins',
         subject: "Jenkins Pipeline Failed: ${env.BUILD_TAG}",
-        body: "Details: ${message}"
+        body: "Details: ${trace}"
       ])
     } catch (inner) {
       echo "${inner}"
