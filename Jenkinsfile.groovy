@@ -42,7 +42,7 @@ node {
         echo "${key} = ${value}"
       }
 
-      echo "IMAGE_VERSION = ${IMAGE_VERISON}"
+      echo "IMAGE_VERSION = ${IMAGE_VERSION}"
     }
 
     // stage('Build') {
@@ -93,18 +93,22 @@ node {
     def printWriter
     def stringWriter
 
-    stringWriter = new StringWriter()
-    printWriter = new PrintWriter(stringWriter)
-    err.printStackTrace(printWriter)
+    try {
+      stringWriter = new StringWriter()
+      printWriter = new PrintWriter(stringWriter)
+      err.printStackTrace(printWriter)
 
-    message = stringWriter.toString()
+      message = stringWriter.toString()
 
-    mail([
-      to: 'gs-haz_dev_team_group@usgs.gov',
-      from: 'noreply@jenkins',
-      subject: "Jenkins Pipeline Failed: ${env.BUILD_TAG}",
-      body: "Details: ${message}"
-    ])
+      mail([
+        to: 'gs-haz_dev_team_group@usgs.gov',
+        from: 'noreply@jenkins',
+        subject: "Jenkins Pipeline Failed: ${env.BUILD_TAG}",
+        body: "Details: ${message}"
+      ])
+    } catch (inner) {
+      echo "${inner}"
+    }
 
     currentBuild.result = 'FAILURE'
     throw err
