@@ -30,7 +30,7 @@ node {
       if (SCM_VARS.GIT_BRANCH == 'origin/master') {
         // git master --> docker latest
         IMAGE_VERSION = 'latest'
-      } else if (SCM_VARS.GIT_BRANCH.substring(0, 7) == 'origin/') {
+      } else if (SCM_VARS.GIT_BRANCH.startsWith('origin/')) {
         // git origin/BRANCH --> docker BRANCH
         IMAGE_VERSION = SCM_VARS.GIT_BRANCH.substring(7).replace(' ', '_')
       } else {
