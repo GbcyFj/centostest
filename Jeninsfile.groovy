@@ -16,51 +16,55 @@ node {
       cleanWs()
 
       SCM_VARS = checkout changelog: false, poll: false, scm
-    }
 
-    stage('Build') {
-      ansiColor('xterm') {
-        sh """
-          docker build \
-            --build-arg FROM_IMAGE=${FROM_IMAGE}:${params.IMAGE_VERSION}
-            -t ${IMAGE_NAME}:${params.IMAGE_VERSION} .
-        """
+      SCM_VARS.each { key, value ->
+        echo "${key} = ${value}"
       }
     }
 
-    stage('Publish') {
-      withCredentials([usernamePassword(
-          credentialsId: 'innersource-hazdev-cicd',
-          passwordVariable: 'REGISTRY_PASSWORD',
-          usernameVariable: 'REGISTRY_USERNAME')
-      ]) {
-        ansiColor('xterm') {
-          sh """
-            docker login ${GITLAB_INNERSOURCE_REGISTRY} \
-              -u ${REGISTRY_USERNAME} \
-              -p ${REGISTRY_PASSWORD}
+    // stage('Build') {
+    //   ansiColor('xterm') {
+    //     sh """
+    //       docker build \
+    //         --build-arg FROM_IMAGE=${FROM_IMAGE}:${params.IMAGE_VERSION}
+    //         -t ${IMAGE_NAME}:${params.IMAGE_VERSION} .
+    //     """
+    //   }
+    // }
 
-            docker push ${IMAGE_NAME}:${params.IMAGE_VERSION}
-          """
-        }
+    // stage('Publish') {
+    //   withCredentials([usernamePassword(
+    //       credentialsId: 'innersource-hazdev-cicd',
+    //       passwordVariable: 'REGISTRY_PASSWORD',
+    //       usernameVariable: 'REGISTRY_USERNAME')
+    //   ]) {
+    //     ansiColor('xterm') {
+    //       sh """
+    //         docker login ${GITLAB_INNERSOURCE_REGISTRY} \
+    //           -u ${REGISTRY_USERNAME} \
+    //           -p ${REGISTRY_PASSWORD}
 
-        if (params.TAG_LATEST && params.IMAGE_VERSION != 'latest') {
-          ansiColor('xterm') {
-            sh """
-              docker tag \
-                ${IMAGE_NAME}:${params.IMAGE_VERSION} \
-                ${IMAGE_NAME}:latest
+    //         docker push ${IMAGE_NAME}:${params.IMAGE_VERSION}
+    //       """
+    //     }
 
-              docker login ${GITLAB_INNERSOURCE_REGISTRY} \
-                -u ${REGISTRY_USERNAME} \
-                -p ${REGISTRY_PASSWORD}
+    //     if (params.TAG_LATEST && params.IMAGE_VERSION != 'latest') {
+    //       ansiColor('xterm') {
+    //         sh """
+    //           docker tag \
+    //             ${IMAGE_NAME}:${params.IMAGE_VERSION} \
+    //             ${IMAGE_NAME}:latest
 
-              docker push ${IMAGE_NAME}:${latest}
-            """
-          }
-        }
-      }
-    }
+    //           docker login ${GITLAB_INNERSOURCE_REGISTRY} \
+    //             -u ${REGISTRY_USERNAME} \
+    //             -p ${REGISTRY_PASSWORD}
+
+    //           docker push ${IMAGE_NAME}:${latest}
+    //         """
+    //       }
+    //     }
+    //   }
+    // }
   } catch (err) {
     def message
     def printWriter
