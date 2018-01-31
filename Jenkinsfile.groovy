@@ -32,10 +32,10 @@ node {
         IMAGE_VERSION = 'latest'
       } else if (SCM_VARS.GIT_BRANCH.substring(0, 7) == 'origin/') {
         // git origin/BRANCH --> docker BRANCH
-        IMAGE_VERSION = SCM_VARS.GIT_BRANCH.substring(7)
+        IMAGE_VERSION = SCM_VARS.GIT_BRANCH.substring(7).replace(' ', '_')
       } else {
         // git TAG --> docker TAG
-        IMAGE_VERSION = SCM_VARS.GIT_BRANCH
+        IMAGE_VERSION = SCM_VARS.GIT_BRANCH.replace(' ', '_')
       }
 
       SCM_VARS.each { key, value ->
