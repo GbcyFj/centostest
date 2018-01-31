@@ -1,6 +1,8 @@
-FROM centos:7
-MAINTAINER Eric Martinez <emartinez@usgs.gov>
-LABEL dockerfile_version="v0.3.0"
+ARG FROM_IMAGE=centos:7
+FROM FROM_IMAGE
+
+LABEL maintainer="Eric Martinez <emartinez@usgs.gov>"\
+      dockerfile_version="v1.0.0"
 
 # Allow builds within DOI network
 COPY DOIRootCA2.crt /etc/pki/ca-trust/source/anchors/DOIRootCA2.crt
