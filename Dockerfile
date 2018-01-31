@@ -9,7 +9,6 @@ COPY DOIRootCA2.crt /etc/pki/ca-trust/source/anchors/DOIRootCA2.crt
 
 # Update current system packages and certificates
 RUN yum upgrade -y && \
-    yum install -y yum-security && \
     yum updateinfo -y && \
     yum install -y \
       ca-certificates \
