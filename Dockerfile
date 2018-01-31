@@ -1,5 +1,5 @@
 ARG FROM_IMAGE=centos:7
-FROM FROM_IMAGE
+FROM $FROM_IMAGE
 
 LABEL maintainer="Eric Martinez <emartinez@usgs.gov>"\
       dockerfile_version="v1.0.0"
