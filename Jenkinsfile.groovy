@@ -42,7 +42,7 @@ node {
         echo "${key} = ${value}"
       }
 
-      echo "IMAGE_VERSION = ${IMAGE_VERSION}"
+      echo "IMAGE_VERSION = ${IMAGE_VERSON}"
     }
 
     stage('Build') {
