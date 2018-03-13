@@ -68,7 +68,7 @@ node {
             echo "CRED_U = ${CREDS_HUB_USERNAME}"
             echo "CRED_P = ${CREDS_HUB_PASSWORD}"
 
-            sh "docker login -u ${HUB_USERNAME} -p ${HUB_PASSWORD}"
+            sh "docker login -u ${CREDS_HUB_USERNAME} -p ${CREDS_HUB_PASSWORD}"
             sh "docker push usgs/centos:${IMAGE_VERSION}"
           }
         }
