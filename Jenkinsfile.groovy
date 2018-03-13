@@ -68,9 +68,9 @@ node {
         ansiColor('xterm') {
           sh """
             docker login \
-              https://registry.hub.docker.com \
               --username ${HUB_USERNAME} \
-              --password ${HUB_PASSWORD}
+              --password ${HUB_PASSWORD} \
+              registry.hub.docker.com
             docker push usgs/centos:${IMAGE_VERSION}
           """
           // sh "docker push usgs/centos:${IMAGE_VERSION}"
