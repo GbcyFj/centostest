@@ -69,8 +69,7 @@ node {
           sh """
             docker login \
               --username ${HUB_USERNAME} \
-              --password ${HUB_PASSWORD} \
-              registry.hub.docker.com
+              --password ${HUB_PASSWORD}
             docker push usgs/centos:${IMAGE_VERSION}
           """
           // sh "docker push usgs/centos:${IMAGE_VERSION}"
