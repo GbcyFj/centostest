@@ -36,6 +36,12 @@ node {
             --build-arg FROM_IMAGE=${FROM_IMAGE}:${IMAGE_VERSION} \
             -t ${IMAGE_NAME}:${IMAGE_VERSION} .
         """
+
+        sh """
+          docker tag \
+            ${IMAGE_NAME}:${IMAGE_VERSION} \
+            usgs/centos:${IMAGE_VERSION}
+        """
       }
     }
 
@@ -46,6 +52,15 @@ node {
       ) {
         ansiColor('xterm') {
           sh "docker push ${IMAGE_NAME}:${IMAGE_VERSION}"
+        }
+      }
+
+      docker.withRegistry(
+        "https://registry.hub.docker.com"
+        'dockerhub-usgshazdevcicd'
+      ) {
+        ansiColor('xterm') {
+          sh "docker push usgs/centos:${IMAGE_VERSION}"
         }
       }
     }
