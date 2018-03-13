@@ -66,12 +66,12 @@ node {
     }
   } catch (err) {
     try {
-      mail([
-        to: 'gs-haz_dev_team_group@usgs.gov',
-        from: 'noreply@jenkins',
-        subject: "Jenkins Pipeline Failed: ${env.BUILD_TAG}",
-        body: "Details: ${err}"
-      ])
+      // mail([
+      //   to: 'gs-haz_dev_team_group@usgs.gov',
+      //   from: 'noreply@jenkins',
+      //   subject: "Jenkins Pipeline Failed: ${env.BUILD_TAG}",
+      //   body: "Details: ${err}"
+      // ])
     } catch (inner) {
       echo "An error occured while sending email. '${inner}'"
     }
