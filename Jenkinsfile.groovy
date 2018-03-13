@@ -61,20 +61,20 @@ node {
       //   usernameVariable: 'HUB_PASSWORD'
       // )]) {
 
-      // docker.withRegistry(
-      //   "https://registry.hub.docker.com",
-      //   'dockerhub-usgshazdevcicd-short'
-      // ) {
+      docker.withRegistry(
+        "https://registry.hub.docker.com",
+        params['dockerhub-credentials']
+      ) {
         ansiColor('xterm') {
-          sh """
-            docker login \
-              --username '${HUB_USERNAME}' \
-              --password '${HUB_PASSWORD}'
-            docker push usgs/centos:${IMAGE_VERSION}
-          """
-          // sh "docker push usgs/centos:${IMAGE_VERSION}"
+          // sh """
+          //   docker login \
+          //     --username '${HUB_USERNAME}' \
+          //     --password '${HUB_PASSWORD}'
+          //   docker push usgs/centos:${IMAGE_VERSION}
+          // """
+          sh "docker push usgs/centos:${IMAGE_VERSION}"
         }
-      // }
+      }
     }
   } catch (err) {
     try {
