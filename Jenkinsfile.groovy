@@ -57,18 +57,14 @@ node {
 
       withCredentials([usernamePassword(
         credentialsId: 'usgs-docker-hub-credentials',
-        passwordVariable: 'CREDS_HUB_USERNAME',
-        usernameVariable: 'CREDS_HUB_PASSWORD'
+        passwordVariable: 'HUB_USERNAME',
+        usernameVariable: 'HUB_PASSWORD'
       )]) {
 
         docker.withRegistry('', 'usgs-docker-hub-credentials') {
           ansiColor('xterm') {
-            echo "HUB_U = ${HUB_USERNAME}"
-            echo "HUB_P = ${HUB_PASSWORD}"
-            echo "CRED_U = ${CREDS_HUB_USERNAME}"
-            echo "CRED_P = ${CREDS_HUB_PASSWORD}"
-
-            sh "docker login -u ${CREDS_HUB_USERNAME} -p ${CREDS_HUB_PASSWORD}"
+            sh "docker logout"
+            sh "docker login -u ${HUB_USERNAME} -p ${HUB_PASSWORD}"
             sh "docker push usgs/centos:${IMAGE_VERSION}"
           }
         }
