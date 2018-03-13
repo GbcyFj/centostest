@@ -56,14 +56,14 @@ node {
       }
 
       withCredentials([usernamePassword(
-        credentialsId: 'dockerhub-usgshazdevcicd',
+        credentialsId: 'dockerhub-usgshazdevcicd-short',
         passwordVariable: 'HUB_USERNAME',
         usernameVariable: 'HUB_PASSWORD'
       )]) {
 
       // docker.withRegistry(
       //   "https://registry.hub.docker.com",
-      //   'dockerhub-usgshazdevcicd'
+      //   'dockerhub-usgshazdevcicd-short'
       // ) {
         ansiColor('xterm') {
           sh """
