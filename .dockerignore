@@ -1,4 +1,9 @@
 .dockerfile
 .git
-README
+code.json
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
+DISCLAIMER.md
 Jenkinsfile.groovy
+LICENSE.md
+README.md
