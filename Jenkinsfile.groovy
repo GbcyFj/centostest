@@ -45,6 +45,24 @@ node {
       }
     }
 
+    stage('Scan') {
+      echo "TODO :: Implement scanning ..."
+      // https://cisofy.com/lynis/
+      // OR
+      // https://www.open-scap.org/resources/documentation/perform-vulnerability-scan-of-rhel-6-machine/
+      // (specific to RHEL6, but works for 7 with minor adjustments)
+      // OR
+      // ... ??? ...
+
+      // Requirements ...
+      // - Must be open source
+      // - Must be free
+      // - Must stay up-to-date with current CVE etc...
+      // - Must be able to discern success/failure status
+      //
+      // - Should produce artifact report
+    }
+
     stage('Publish') {
       docker.withRegistry(
         "https://${GITLAB_INNERSOURCE_REGISTRY}",
