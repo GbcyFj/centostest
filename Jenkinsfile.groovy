@@ -7,9 +7,10 @@ node {
   def IMAGE_VERSION = null
   def SCM_VARS = null
 
-  CONTAINER_BASE = "${GITLAB_INNERSOURCE_REGISTRY}/devops/containers"
-  FROM_IMAGE = "${CONTAINER_BASE}/library/centos"
-  IMAGE_NAME = "${CONTAINER_BASE}/centos"
+  CONTAINER_BASE = "${GITLAB_INNERSOURCE_REGISTRY}/devops/images"
+  FROM_IMAGE = "${CONTAINER_BASE}/centos"
+  IMAGE_NAME = "${CONTAINER_BASE}/usgs/centos"
+  IMAGE_VERSION = params.FROM_IMAGE_TAG
 
   try {
     stage('Initialize') {
@@ -26,49 +27,25 @@ node {
           script: "git rev-parse HEAD"
         )
       }
-
-      if (SCM_VARS.GIT_BRANCH == 'origin/master') {
-        // git master --> docker latest
-        IMAGE_VERSION = 'latest'
-      } else if (SCM_VARS.GIT_BRANCH.startsWith('origin/')) {
-        // git origin/BRANCH --> docker BRANCH
-        IMAGE_VERSION = SCM_VARS.GIT_BRANCH.substring(7).replace(' ', '_')
-      } else {
-        // git TAG --> docker TAG
-        IMAGE_VERSION = SCM_VARS.GIT_BRANCH.replace(' ', '_')
-      }
-
-      SCM_VARS.each { key, value ->
-        echo "${key} = ${value}"
-      }
-
-      echo "IMAGE_VERSION = ${IMAGE_VERSION}"
     }
 
     stage('Build') {
       ansiColor('xterm') {
         sh """
           docker build \
-            --build-arg FROM_IMAGE=${FROM_IMAGE}:${params.FROM_IMAGE_TAG} \
+            --build-arg FROM_IMAGE=${FROM_IMAGE}:${IMAGE_VERSION} \
             -t ${IMAGE_NAME}:${IMAGE_VERSION} .
         """
       }
     }
 
     stage('Publish') {
-      withCredentials([usernamePassword(
-          credentialsId: 'innersource-hazdev-cicd',
-          passwordVariable: 'REGISTRY_PASSWORD',
-          usernameVariable: 'REGISTRY_USERNAME')
-      ]) {
+      docker.withRegistry(
+        "https://${GITLAB_INNERSOURCE_REGISTRY}",
+        'innersource-hazdev-cicd'
+      ) {
         ansiColor('xterm') {
-          sh """
-            docker login ${GITLAB_INNERSOURCE_REGISTRY} \
-              -u ${REGISTRY_USERNAME} \
-              -p ${REGISTRY_PASSWORD}
-
-            docker push ${IMAGE_NAME}:${IMAGE_VERSION}
-          """
+          sh "docker push ${IMAGE_NAME}:${IMAGE_VERSION}"
         }
       }
     }
