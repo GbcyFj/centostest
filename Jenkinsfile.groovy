@@ -56,7 +56,7 @@ node {
       }
 
       docker.withRegistry(
-        "https://registry.hub.docker.com"
+        "https://registry.hub.docker.com",
         'dockerhub-usgshazdevcicd'
       ) {
         ansiColor('xterm') {
