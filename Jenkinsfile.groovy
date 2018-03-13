@@ -57,8 +57,8 @@ node {
 
       withCredentials([usernamePassword(
         credentialsId: 'usgs-docker-hub-credentials',
-        passwordVariable: 'HUB_USERNAME',
-        usernameVariable: 'HUB_PASSWORD'
+        passwordVariable: 'CREDS_HUB_USERNAME',
+        usernameVariable: 'CREDS_HUB_PASSWORD'
       )]) {
 
         docker.withRegistry('', 'usgs-docker-hub-credentials') {
