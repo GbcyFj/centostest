@@ -63,7 +63,7 @@ node {
 
         docker.withRegistry('', 'usgs-docker-hub-credentials') {
           ansiColor('xterm') {
-            sh "docker login -u ${HUB_USERNAME} -p ${HUB_PASSWORD}"
+            sh "docker login -u ${params.HUB_USERNAME} -p ${params.HUB_PASSWORD}"
             sh "docker push usgs/centos:${IMAGE_VERSION}"
           }
         }
