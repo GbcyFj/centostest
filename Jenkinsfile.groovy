@@ -55,20 +55,12 @@ node {
         }
       }
 
-      // withCredentials([usernamePassword(
-      //   credentialsId: 'usgs-docker-hub-credentials',
-      //   passwordVariable: 'HUB_USERNAME',
-      //   usernameVariable: 'HUB_PASSWORD'
-      // )]) {
 
-        docker.withRegistry('', 'usgs-docker-hub-credentials') {
-          ansiColor('xterm') {
-            // sh "docker logout"
-            // sh "docker login -u ${HUB_USERNAME} -p ${HUB_PASSWORD}"
-            sh "docker push usgs/centos:${IMAGE_VERSION}"
-          }
+      docker.withRegistry('', 'usgs-docker-hub-credentials') {
+        ansiColor('xterm') {
+          sh "docker push usgs/centos:${IMAGE_VERSION}"
         }
-      // }
+      }
     }
   } catch (err) {
     try {
