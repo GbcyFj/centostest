@@ -20,11 +20,11 @@ RUN yum upgrade -y && \
 # location of ssl certificate chain
 ENV SSL_CERT_FILE /etc/pki/tls/certs/ca-bundle.crt
 
-# Create a hazdev user to run application inside container
+# Create a USGS user to run application inside container
 RUN useradd \
   -c 'Docker image user' \
   -m \
   -r \
   -s /sbin/nologin \
   -U \
-  hazdev-user
+  usgs-user
