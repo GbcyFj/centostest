@@ -55,11 +55,11 @@ node {
         }
       }
 
-      withCredentials([usernamePassword(
-        credentialsId: 'dockerhub-usgshazdevcicd',
-        passwordVariable: 'HUB_USERNAME',
-        usernameVariable: 'HUB_PASSWORD'
-      )]) {
+      // withCredentials([usernamePassword(
+      //   credentialsId: 'dockerhub-usgshazdevcicd',
+      //   passwordVariable: 'HUB_USERNAME',
+      //   usernameVariable: 'HUB_PASSWORD'
+      // )]) {
 
       // docker.withRegistry(
       //   "https://registry.hub.docker.com",
@@ -75,7 +75,7 @@ node {
           """
           // sh "docker push usgs/centos:${IMAGE_VERSION}"
         }
-      }
+      // }
     }
   } catch (err) {
     try {
