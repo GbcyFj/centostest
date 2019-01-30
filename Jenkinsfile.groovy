@@ -3,29 +3,23 @@
 node {
   def CONTAINER_BASE = null
   def FROM_IMAGE = null
-  def IMAGE_NAME = null
-  def IMAGE_VERSION = null
-  def SCM_VARS = null
+  def INTERNAL_IMAGE_NAME = null
+  def PUBLIC_IMAGE_NAME = null
 
   CONTAINER_BASE = "${GITLAB_INNERSOURCE_REGISTRY}/devops/images"
-  FROM_IMAGE = "${CONTAINER_BASE}/centos"
-  IMAGE_NAME = "${CONTAINER_BASE}/usgs/centos"
-  IMAGE_VERSION = params.FROM_IMAGE_TAG
+  FROM_IMAGE = "${CONTAINER_BASE}/${params.FROM_IMAGE}"
+
+  PUBLIC_IMAGE_NAME = "usgs/${params.FROM_IMAGE}"
+  INTERNAL_IMAGE_NAME = "${CONTAINER_BASE}/${PUBLIC_IMAGE_NAME}"
 
   try {
     stage('Initialize') {
       cleanWs()
 
-      SCM_VARS = checkout scm
+      checkout scm
 
       if (params.GIT_BRANCH != '') {
         sh "git checkout --detach ${params.GIT_BRANCH}"
-
-        SCM_VARS.GIT_BRANCH = params.GIT_BRANCH
-        SCM_VARS.GIT_COMMIT = sh(
-          returnStdout: true,
-          script: "git rev-parse HEAD"
-        )
       }
     }
 
@@ -33,14 +27,14 @@ node {
       ansiColor('xterm') {
         sh """
           docker build \
-            --build-arg FROM_IMAGE=${FROM_IMAGE}:${IMAGE_VERSION} \
-            -t ${IMAGE_NAME}:${IMAGE_VERSION} .
+            --build-arg FROM_IMAGE=${FROM_IMAGE} \
+            -t ${INTERNAL_IMAGE_NAME} .
         """
 
         sh """
           docker tag \
-            ${IMAGE_NAME}:${IMAGE_VERSION} \
-            usgs/centos:${IMAGE_VERSION}
+            ${INTERNAL_IMAGE_NAME} \
+            ${PUBLIC_IMAGE_NAME}
         """
       }
     }
@@ -69,14 +63,14 @@ node {
         'innersource-hazdev-cicd'
       ) {
         ansiColor('xterm') {
-          sh "docker push ${IMAGE_NAME}:${IMAGE_VERSION}"
+          sh "docker push ${INTERNAL_IMAGE_NAME}"
         }
       }
 
 
       docker.withRegistry('', 'usgs-docker-hub-credentials') {
         ansiColor('xterm') {
-          sh "docker push usgs/centos:${IMAGE_VERSION}"
+          sh "docker push ${PUBLIC_IMAGE_NAME}"
         }
       }
     }
